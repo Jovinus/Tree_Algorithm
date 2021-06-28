@@ -3,6 +3,7 @@ import pandas as pd
 from IPython.display import display
 # %%
 df_orig = pd.read_csv('./sct2_Relationship_Snapshot_INT_20210131.txt', delimiter='\t')
+df_orig = df_orig[df_orig['active'] == 1].reset_index(drop=True)
 print(len(df_orig))
 display(df_orig.head())
 
