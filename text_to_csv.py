@@ -43,4 +43,3 @@ df_orig[column_order]
 
 # %%
 df_orig[column_order].to_csv('./sct_relationship_codes.csv', index=False)
-# %%
