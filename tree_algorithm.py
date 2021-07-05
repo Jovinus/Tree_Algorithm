@@ -37,11 +37,14 @@ class hierarchical_graph():
 
         if save == True:
             results.to_csv("./"+ str(node) + "_decendent.csv", index=False, encoding='utf-8')
-        
-    def get_descendent_all(self, node, max_level, save=False):
+
+    def get_descendent_all(self, node, max_level=0, save=False):
         
         ## Get max depth of given node 
         max_depth = max(nx.single_source_shortest_path_length(self.graph, node).values())
+        
+        if max_level == 0:
+            max_level = max_depth
         
         results = pd.DataFrame([])
         
@@ -68,6 +71,6 @@ if __name__ == '__main__':
     
     test = hierarchical_graph(data=df_orig, parent='destinationId', source='sourceId')
     test.get_descendent(node=138875005, level=1, save=False)
-    test.get_descendent_all(node=138875005, max_level=14, save=False)
+    test.get_descendent_all(node=138875005, max_level=0, save=False)
     
 # %%
