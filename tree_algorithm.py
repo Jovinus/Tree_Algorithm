@@ -11,12 +11,17 @@ display(df_orig.head())
 
 DiG = nx.from_pandas_edgelist(df_orig, target='sourceId', source='destinationId', create_using=nx.DiGraph())
 
-
 #%%
-class hierarchical_graph(self, data, parent, source):
+class hierarchical_graph():
     
-    def __init__(self):
+    def __init__(self, data, parent, source):
         self.data = data
+        self.parent = parent
+        self.source = source
+        
+        super().__init__()
+        
+        DiG = nx.from_pandas_edgelist(df_orig, target=self.parent, source=self.source, create_using=nx.DiGraph())
     
     def get_descendent(node):
         data
@@ -37,4 +42,6 @@ df_orig[(df_orig['sourceId'].isin(nx.descendants_at_distance(G=DiG, source=13887
 # %%
 
 df_orig[(df_orig['sourceId'].isin(nx.descendants(G=DiG, source=267038008))) & (df_orig['active'] == True)]
+# %%
+max(nx.single_source_shortest_path_length(DiG, 138875005).values())
 # %%
