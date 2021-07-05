@@ -15,6 +15,7 @@ class hierarchical_graph():
         super().__init__()
         
         ## Generate Relationship Graph
+        ## Decendants
         self.graph = nx.from_pandas_edgelist(df_orig, 
                                              target=self.parent, 
                                              source=self.source, 
@@ -29,13 +30,13 @@ class hierarchical_graph():
                                                 distance=level)
         
         ## displaying
-        results = self.data[self.data['sourceId'].isin(decendents)]
+        results = self.data[self.data['sourceId'].isin(decendents)].copy()
         results['level'] = level
         
         display(results)
 
         if save == True:
-            results.to_csv("./"+ str(node) + "_decendent_all.csv", index=False, encoding='utf-8')
+            results.to_csv("./"+ str(node) + "_decendent.csv", index=False, encoding='utf-8')
         
     def get_descendent_all(self, node, max_level, save=False):
         
@@ -68,6 +69,5 @@ if __name__ == '__main__':
     test = hierarchical_graph(data=df_orig, parent='destinationId', source='sourceId')
     test.get_descendent(node=138875005, level=1, save=False)
     test.get_descendent_all(node=138875005, max_level=14, save=False)
-    
     
 # %%
