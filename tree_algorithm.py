@@ -15,21 +15,39 @@ DiG = nx.from_pandas_edgelist(df_orig, target='sourceId', source='destinationId'
 class hierarchical_graph():
     
     def __init__(self, data, parent, source):
-        self.data = data
-        self.parent = parent
-        self.source = source
+        self.data = data            ## DataFrame
+        self.parent = source        ## Children(Lower)
+        self.source = parent        ## Parents(Higher)
         
         super().__init__()
         
-        DiG = nx.from_pandas_edgelist(df_orig, target=self.parent, source=self.source, create_using=nx.DiGraph())
+        self.graph = nx.from_pandas_edgelist(df_orig, 
+                                             target=self.parent, 
+                                             source=self.source, 
+                                             create_using=nx.DiGraph())
     
-    def get_descendent(node):
-        data
+    def get_descendent(self, node, level):
+        decendents = nx.descendants_at_distance(G=self.graph, 
+                                                source=node, 
+                                                distance=level)
+        
+        ## displaying
+        display(self.data[self.data['sourceId'].isin(decendents)])
+        
+    def get_descendent_all(self, node):
+        decendents = nx.descendants(G=self.graph, 
+                                    source=node)
+        ## displaying
+        display(self.data[self.data['sourceId'].isin(decendents)])
 
 # %%
 
 if __name__ == '__main__':
     df_orig = fread('./sct_relationship_codes.csv', na_strings=['NA','']).to_pandas()
+    
+    test = hierarchical_graph(data=df_orig, parent='destinationId', source='sourceId')
+    test.get_descendent(node=138875005, level=1)
+    
     display(df_orig.head())
     
 # %%
