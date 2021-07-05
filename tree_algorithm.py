@@ -19,7 +19,7 @@ class hierarchical_graph(self, data, parent, source):
         self.data = data
     
     def get_descendent(node):
-        
+        data
 
 # %%
 
@@ -28,6 +28,13 @@ if __name__ == '__main__':
     display(df_orig.head())
     
 # %%
-nx.descendants_at_distance(G=DiG, source=138875005, distance=1)
-nx.single_source_shortest_path_length(DiG, 138875005)
+print(nx.descendants_at_distance(G=DiG, source=138875005, distance=1))
+# %%
+test = nx.single_source_shortest_path_length(DiG, 138875005)
+max(test.values())
+# %%
+df_orig[(df_orig['sourceId'].isin(nx.descendants_at_distance(G=DiG, source=138875005, distance=1))) & (df_orig['active'] == True)]
+# %%
+
+df_orig[(df_orig['sourceId'].isin(nx.descendants(G=DiG, source=267038008))) & (df_orig['active'] == True)]
 # %%
