@@ -41,9 +41,11 @@ class hierarchical_graph():
         display(results)
 
         if save == True:
-            results.to_csv("./"+ str(node) + "_decendent.csv", index=False, encoding='utf-8')
+            results[results.columns] = results[results.columns].astype(str)
+            results.to_excel("./"+ str(node) + "_decendent.xlsx", index=False, encoding='utf-8')
+            # results.to_csv("./"+ str(node) + "_decendent.csv", index=False, encoding='utf-8')
 
-    def get_descendent_all(self, node, max_level=0, save=False):
+    def get_descendent_all(self, node, max_level=0, relation_all=False, save=False):
         
         ## Get max depth of given node 
         max_depth = max(nx.single_source_shortest_path_length(self.graph_descend, node).values())
@@ -60,7 +62,18 @@ class hierarchical_graph():
                                                     source=node, 
                                                     distance=level)
             
-            tmp_df = self.data[self.data['sourceId'].isin(decendents)].copy()
+            if relation_all:
+                tmp_df = self.data[self.data['sourceId'].isin(decendents)].copy()
+                
+            else:
+                if level == 1:
+                    parents_relation = [node]
+                    
+                tmp_df = self.data[(self.data['sourceId'].isin(decendents)) & (self.data['destinationId'].isin(parents_relation))].copy()
+                
+                parents_relation = decendents
+            
+            
             tmp_df['level'] = level
             results = pd.concat((results, tmp_df), axis=0)
         
@@ -68,7 +81,9 @@ class hierarchical_graph():
         display(results)
         
         if save == True:
-            results.to_csv("./"+ str(node) + "_decendent_all.csv", index=False, encoding='utf-8')
+            results[results.columns] = results[results.columns].astype(str)
+            results.to_excel("./"+ str(node) + "_decendent_all.xlsx", index=False, encoding='utf-8')
+            # results.to_csv("./"+ str(node) + "_decendent_all.csv", index=False, encoding='utf-8')
     
     ## Get ascendent from given level
     def get_ascendent(self, node, level, save=False):
@@ -83,7 +98,9 @@ class hierarchical_graph():
         display(results)
 
         if save == True:
-            results.to_csv("./"+ str(node) + "_ascendent.csv", index=False, encoding='utf-8')
+            results[results.columns] = results[results.columns].astype(str)
+            results.to_excel("./"+ str(node) + "_ascendent.xlsx", index=False, encoding='utf-8')
+            # results.to_csv("./"+ str(node) + "_ascendent.csv", index=False, encoding='utf-8')
     
     ## Get all ascendent from 1 to given levels
     def get_ascendent_all(self, node, max_level=0, save=False):
@@ -111,7 +128,9 @@ class hierarchical_graph():
         display(results)
         
         if save == True:
-            results.to_csv("./"+ str(node) + "_ascendent_all.csv", index=False, encoding='utf-8')
+            results[results.columns] = results[results.columns].astype(str)
+            results.to_excel("./"+ str(node) + "_ascendent_all.xlsx", index=False, encoding='utf-8')
+            # results.to_csv("./"+ str(node) + "_ascendent_all.csv", index=False, encoding='utf-8')
 
 # %%
 
@@ -119,10 +138,10 @@ if __name__ == '__main__':
     df_orig = fread('./sct_relationship_codes.csv', na_strings=['NA','']).to_pandas()
     
     test = hierarchical_graph(data=df_orig, parent='destinationId', source='sourceId')
-    test.get_descendent(node=138875005, level=1, save=False)
-    test.get_descendent_all(node=138875005, max_level=0, save=False)
-    test.get_ascendent(node=138875005, level=1, save=False)
-    test.get_ascendent_all(node=138875005, max_level=0, save=False)
+    # test.get_descendent(node=138875005, level=1, save=True)
+    test.get_descendent_all(node=15497006, max_level=0, relation_all=False, save=False)
+    # test.get_ascendent(node=138875005, level=1, save=False)
+    # test.get_ascendent_all(node=138875005, max_level=0, save=False)
     
 # %%
 
